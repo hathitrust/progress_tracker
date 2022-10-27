@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+
+  test:
+    build: .
+    volumes:
+      - .:/src
+    command: bin/wait-for --timeout=300 pushgateway:9091 -- prove
+    environment:
+      - PUSHGATEWAY=http://pushgateway:9091
+    depends_on:
+      - pushgateway
+
+  test_and_cover:
+    build: .
+    environment:
+      # pass through info needed by coveralls uploader
+      - GITHUB_TOKEN
+      - GITHUB_RUN_ID
+      - GITHUB_EVENT_TOKEN
+      - GITHUB_EVENT_PATH
+      - GITHUB_SHA
+      - GITHUB_REF
+      - GITHUB_ACTIONS
+      - PUSHGATEWAY=http://pushgateway:9091
+    command: bin/test_and_cover.sh
+    depends_on:
+      - pushgateway
+
+  pushgateway:
+    image: prom/pushgateway
+    command:
+      - --web.enable-admin-api
