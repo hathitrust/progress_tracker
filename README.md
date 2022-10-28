@@ -70,7 +70,7 @@ my $count = go_do_some_things();
 
 $tracker->inc($count);
 
-$tracker->start_stage(second_stage');
+$tracker->start_stage('second_stage');
 
 my $second_count = go_do_some_other_things();
 
@@ -89,11 +89,11 @@ variable. All other parameters are optional.
 
 ```perl
 my $tracker = ProgressTracker->new(
-  job => 'jobname.pl',
-  pushgateway => 'http://localhost:9091',
-  namespace => 'namespace',
-  app => 'app',
-  report_interval => 1000,
+  job              => 'jobname.pl',
+  pushgateway      => 'http://localhost:9091',
+  namespace        => 'namespace',
+  app              => 'app',
+  report_interval  => 1000,
   success_interval => 65*60
 );
 
