@@ -18,6 +18,7 @@ WORKDIR /src
 COPY . /src
 ENV PERL5LIB="/src/lib"
 RUN cpanm --notest --installdeps .
+RUN cpanm --notest Devel::Cover::Report::Coveralls
 
 CMD prove
 

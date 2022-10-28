@@ -8,11 +8,10 @@ WriteMakefile(
   PREREQ_PM => {
     'Net::Prometheus' => '0.11',
   },
-  BUILD_REQUIRES => {
+  TEST_REQUIRES => {
     'Test::Spec'       => 0,
     'Test::Time'       => 0,
     'LWP::UserAgent'   => 0,
-    'Devel::Cover::Report::Coveralls' => 0,
   },
   CONFIGURE_REQUIRES => { "ExtUtils::MakeMaker" => 0 },
 );
