@@ -129,7 +129,6 @@ All metrics are gauges, because they can reset between runs of the job.
 ### Alerts
 
 This alert will fire when a job exceeds its expected success interval.
-success interval.
 
 ```yaml
  - alert: JobCompletionTimeoutExceeded
