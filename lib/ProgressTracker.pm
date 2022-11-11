@@ -8,6 +8,7 @@ use strict;
 use warnings;
 
 my $DEFAULT_REPORT_INTERVAL = 1000;
+our $VERSION = 0.9.0;
 
 # TODO perldoc
 
