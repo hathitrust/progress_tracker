@@ -21,7 +21,7 @@ sub new {
   $self->{labels} = { };
   $self->{job} = $params{job} || $ENV{'JOB_NAME'} || basename($0);
   $self->{pushgateway} = $params{pushgateway} || $ENV{'PUSHGATEWAY'};
-  die("Must specify pushgateway base URL with pushgateway param or PUSHGATEWAY env var") unless $self->{pushgateway};
+  $self->warn_not_reporting if !$self->{pushgateway};
 
   my $namespace =  $params{namespace} || $ENV{'JOB_NAMESPACE'};
   $self->{labels}{namespace} = $namespace if $namespace;
@@ -46,6 +46,11 @@ sub new {
 
   return $self;
 
+}
+
+sub warn_not_reporting {
+  my $self = shift;
+  warn("Push gateway base URL is not set; not reporting (set PUSHGATEWAY env var)");
 }
 
 sub label_names {
@@ -106,6 +111,11 @@ sub finalize {
 
 sub push_metrics {
   my $self = shift;
+
+  if(!$self->{pushgateway}) {
+    $self->warn_not_reporting;
+    return;
+  }
 
   my $job = $self->{job};
   my $url = $self->{pushgateway} . "/metrics/job/$job";

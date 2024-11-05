@@ -11,6 +11,7 @@ WriteMakefile(
   TEST_REQUIRES => {
     'Test::Spec'       => 0,
     'Test::Time'       => 0,
+    'Test::Warn'       => 0,
     'LWP::UserAgent'   => 0,
   },
   CONFIGURE_REQUIRES => { "ExtUtils::MakeMaker" => 0 },

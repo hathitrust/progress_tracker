@@ -1,4 +1,4 @@
-version: '3'
+---
 
 services:
 
@@ -6,11 +6,12 @@ services:
     build: .
     volumes:
       - .:/src
-    command: bin/wait-for --timeout=300 pushgateway:9091 -- prove
+    command: prove
     environment:
       - PUSHGATEWAY=http://pushgateway:9091
     depends_on:
-      - pushgateway
+      pushgateway:
+        condition: service_healthy
 
   test_and_cover:
     build: .
@@ -24,11 +25,19 @@ services:
       - GITHUB_REF
       - GITHUB_ACTIONS
       - PUSHGATEWAY=http://pushgateway:9091
-    command: bin/test_and_cover.sh
+    command: cover -test -report Coveralls 
     depends_on:
-      - pushgateway
+      pushgateway:
+        condition: service_healthy
 
   pushgateway:
     image: prom/pushgateway
     command:
       - --web.enable-admin-api
+    healthcheck:
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "-O", "/dev/null", "pushgateway:9091/-/healthy" ]
+      x-healthcheck-defaults: &healthcheck-defaults
+      interval: 5s
+      timeout: 5s
+      start_period: 5s
+      retries: 5

@@ -40,6 +40,11 @@ $tracker->finalize;
 This will report the number of lines processed to the push gateway every 1,000
 lines.
 
+In order to report to the pushgateway, the `PUSHGATEWAY` environment variable
+must be set, or a `pushgateway` argument can be supplied to
+`ProgressTracker->new()`. Otherwise, `ProgressTracker` will warn this is not
+provided.
+
 ### Stages
 
 ```perl

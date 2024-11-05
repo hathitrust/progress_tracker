@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtest-exception-perl \
     libtest-spec-perl \
     libtest-time-perl \
+    libtest-warn-perl \
     libwww-perl \
     libyaml-perl \
     netcat

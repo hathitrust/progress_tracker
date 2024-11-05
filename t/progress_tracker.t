@@ -1,6 +1,7 @@
 use Test::Spec;
 use Test::Exception;
 use Test::Time;
+use Test::Warn;
 use ProgressTracker;
 use LWP::UserAgent;
 
@@ -32,10 +33,10 @@ describe "ProgressTracker" => sub {
     ok($tracker);
   };
 
-  it "requires pushgateway env var is set" => sub {
+  it "warns if pushgateway env var is not set" => sub {
     my $old_gateway = $ENV{PUSHGATEWAY};
     delete $ENV{PUSHGATEWAY};
-    dies_ok { ProgressTracker->new() };
+    warning_like { ProgressTracker->new() } qr/not reporting.*PUSHGATEWAY/;
 
     $ENV{PUSHGATEWAY} = $old_gateway;
   };
@@ -186,6 +187,15 @@ describe "ProgressTracker" => sub {
       $tracker->update_metrics;
       ok(metrics !~ /^job_last_success/m);
     };
+
+    it "warns if pushgateway env var is not set" => sub {
+      my $old_gateway = $ENV{PUSHGATEWAY};
+      delete $ENV{PUSHGATEWAY};
+      my $tracker = ProgressTracker->new();
+      warning_like { $tracker->update_metrics; } qr/not reporting.*PUSHGATEWAY/;
+
+      $ENV{PUSHGATEWAY} = $old_gateway;
+    }
 
   };
 
