@@ -76,28 +76,28 @@ describe "ProgressTracker" => sub {
     }
   };
 
-  describe "namespace label" => sub {
-    it "has no namespace label by default" => sub {
+  describe "instance label" => sub {
+    it "has an empty instance label by default" => sub {
       my $tracker = ProgressTracker->new();
       $tracker->update_metrics;
 
-      ok(metrics !~ /^job_duration_seconds.*namespace=/m);
+      ok(metrics =~ /^job_duration_seconds.*instance=""/m);
     };
 
-    it "uses namespace param if given" => sub {
+    it "uses instance param if given" => sub {
       $ENV{JOB_NAMESPACE} = 'some-namespace';
-      my $tracker = ProgressTracker->new(namespace=>'override-namespace');
+      my $tracker = ProgressTracker->new(instance=>'override-instance');
       $tracker->update_metrics;
 
-      ok(metrics =~ /^job_duration_seconds\S*namespace="override-namespace"/m);
+      ok(metrics =~ /^job_duration_seconds\S*instance="override-instance"/m);
     };
 
-    it "uses JOB_NAMESPACE env var if given" => sub {
+    it "uses JOB_NAMESPACE env var as instance if given" => sub {
       $ENV{JOB_NAMESPACE} = 'some-namespace';
       my $tracker = ProgressTracker->new();
       $tracker->update_metrics;
 
-      ok(metrics =~ /^job_duration_seconds\S*namespace="some-namespace"/m);
+      ok(metrics =~ /^job_duration_seconds\S*instance="some-namespace"/m);
     };
   };
 
@@ -151,13 +151,13 @@ describe "ProgressTracker" => sub {
       ok(metrics =~ /^job_expected_success_interval\S* 67890$/m);
     };
 
-    it "works if there is a namespace label" => sub {
+    it "works if there is an instance label" => sub {
       $ENV{JOB_SUCCESS_INTERVAL} = '12345';
       $ENV{JOB_NAMESPACE} = 'some-namespace';
       my $tracker = ProgressTracker->new();
       $tracker->update_metrics;
 
-      ok(metrics =~ /^job_expected_success_interval\S*namespace="some-namespace"\S* 12345$/m);
+      ok(metrics =~ /^job_expected_success_interval\S*instance="some-namespace"\S* 12345$/m);
     };
   };
 

@@ -23,8 +23,8 @@ sub new {
   $self->{pushgateway} = $params{pushgateway} || $ENV{'PUSHGATEWAY'};
   $self->warn_not_reporting if !$self->{pushgateway};
 
-  my $namespace =  $params{namespace} || $ENV{'JOB_NAMESPACE'};
-  $self->{labels}{namespace} = $namespace if $namespace;
+  my $instance =  $params{instance} || $ENV{'JOB_NAMESPACE'};
+  $self->{labels}{instance} = $instance if $instance;
 
   my $app =  $params{app} || $ENV{'JOB_APP'};
   $self->{labels}{app} = $app if $app;
