@@ -81,7 +81,7 @@ describe "ProgressTracker" => sub {
       my $tracker = ProgressTracker->new();
       $tracker->update_metrics;
 
-      ok(metrics =~ /^job_duration_seconds.*instance=""/m);
+      ok(metrics =~ /^job_duration_seconds\{instance="",job="progress_tracker.t"\}/m);
     };
 
     it "uses instance param if given" => sub {
@@ -89,7 +89,7 @@ describe "ProgressTracker" => sub {
       my $tracker = ProgressTracker->new(instance=>'override-instance');
       $tracker->update_metrics;
 
-      ok(metrics =~ /^job_duration_seconds\S*instance="override-instance"/m);
+      ok(metrics =~ /^job_duration_seconds\{instance="override-instance",job="progress_tracker.t"\}/m);
     };
 
     it "uses JOB_NAMESPACE env var as instance if given" => sub {
@@ -97,7 +97,7 @@ describe "ProgressTracker" => sub {
       my $tracker = ProgressTracker->new();
       $tracker->update_metrics;
 
-      ok(metrics =~ /^job_duration_seconds\S*instance="some-namespace"/m);
+      ok(metrics =~ /^job_duration_seconds\{instance="some-namespace",job="progress_tracker.t"\}/m);
     };
   };
 
