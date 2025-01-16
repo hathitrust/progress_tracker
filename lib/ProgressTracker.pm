@@ -24,7 +24,7 @@ sub new {
   $self->warn_not_reporting if !$self->{pushgateway};
 
   my $instance =  $params{instance} || $ENV{'JOB_NAMESPACE'};
-  $self->{labels}{instance} = $instance if $instance;
+  $self->{instance} = $instance if $instance;
 
   my $app =  $params{app} || $ENV{'JOB_APP'};
   $self->{labels}{app} = $app if $app;
@@ -118,7 +118,10 @@ sub push_metrics {
   }
 
   my $job = $self->{job};
+  my $instance = $self->{instance};
   my $url = $self->{pushgateway} . "/metrics/job/$job";
+  $url .= "/instance/$instance" if $instance;
+
   my $data = $self->{prom}->render;
 
   $self->{ua}->post($url, Content => $data);
