@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:13
 LABEL org.opencontainers.image.source https://github.com/hathitrust/progress_tracker
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
